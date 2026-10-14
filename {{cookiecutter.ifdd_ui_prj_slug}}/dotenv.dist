@@ -1,0 +1,2 @@
+IFDD_UI_HOST="{{cookiecutter.ifdd_ui_host}}"
+IFDD_UI_VERSION="{{cookiecutter.ifdd_ui_version}}"

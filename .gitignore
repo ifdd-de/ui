@@ -1,0 +1,10 @@
+.idea
+{{cookiecutter.dd4_frontend_prj_slug}}/node_modules
+npm-debug.log
+build
+/src/dd4_theme.js
+/src/Env.js
+/.env
+/.DS_Store
+.DS_Store
+*~

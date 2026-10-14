@@ -1,0 +1,28 @@
+services:
+  ui:
+    env_file:
+      - .env
+    environment:
+      - NODE_ENV=development
+    build:
+      context: .
+      target: development
+      dockerfile: ./Dockerfile
+    volumes:
+      - ./src:/app/src
+      - ./index.html:/app/index.html
+    networks:
+      - ext-proxy-net
+    expose:
+      - 3000
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ifdd_ui.rule=Host(`${IFDD_UI_HOST}`)"
+      - "traefik.http.services.ifdd_ui.loadbalancer.server.port=3000"
+      - "traefik.docker.network=proxy-net"
+    restart: always
+
+networks:
+  ext-proxy-net:
+    name: proxy-net
+    external: true

@@ -1,0 +1,15 @@
+node_modules/
+build/
+dist/
+.env
+envs/*
+*.local
+.DS_Store
+npm-debug.log*
+
+# The private tree is mounted here and never versioned in this repository.
+src/private/*
+!src/private/README.md
+
+# Local builds of the documentation (docs/en, docs/de)
+docs/_build/

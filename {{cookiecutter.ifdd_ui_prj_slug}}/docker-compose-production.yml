@@ -1,0 +1,33 @@
+services:
+  ui:
+    build:
+      context: .
+      target: production
+      dockerfile: ./Dockerfile
+    image: {{cookiecutter.ifdd_registry_url}}/{{cookiecutter.ifdd_ui_prj_slug}}:{{cookiecutter.ifdd_ui_version}}
+    env_file:
+      - .env
+    networks:
+      - ext-proxy-net
+    expose:
+      - 80
+    labels:
+      - "traefik.enable=true"
+      - "traefik.http.routers.ifdd_ui.rule=Host(`${IFDD_UI_HOST}`)"
+      - "traefik.http.services.ifdd_ui.loadbalancer.server.port=80"
+      # Security headers from the proxy (ifdd-de/proxy, headers.yml).
+      - "traefik.http.routers.ifdd_ui.middlewares=security-headers@file,csp-ui@file"
+      - "traefik.docker.network=proxy-net"
+      {%- if cookiecutter.ifdd_ui_enable_tls == "y" %}
+      - "traefik.http.routers.ifdd_ui.entrypoints=websecure"
+      - "traefik.http.routers.ifdd_ui.tls=true"
+      {%- endif +%}
+      {%- if cookiecutter.ifdd_ui_enable_letsencrypt == "y" %}
+      - "traefik.http.routers.ifdd_ui.tls.certresolver=letsencrypt"
+      {%- endif +%}
+    restart: always
+
+networks:
+  ext-proxy-net:
+    name: proxy-net
+    external: true

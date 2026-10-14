@@ -1,0 +1,3 @@
+default_context:
+  ifdd_ui_prj_name: Minimal UI
+  ifdd_ui_aspects: '["product"]'

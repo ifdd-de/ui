@@ -1,0 +1,5 @@
+default_context:
+  ifdd_ui_prj_name: Explorer UI
+  ifdd_ui_show_explorer: "y"
+  ifdd_ui_enable_tls: "y"
+  ifdd_ui_enable_letsencrypt: "y"

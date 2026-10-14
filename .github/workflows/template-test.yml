@@ -1,0 +1,80 @@
+name: Template
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+  workflow_dispatch:
+
+permissions:
+  contents: read
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: true
+
+jobs:
+  render:
+    name: Render, test and build (${{ matrix.fixture }})
+    runs-on: ubuntu-latest
+    strategy:
+      fail-fast: false
+      matrix:
+        fixture: [defaults, explorer, single-aspect]
+
+    steps:
+      - uses: actions/checkout@v7
+        with:
+          path: template
+
+      - uses: actions/setup-python@v7
+        with:
+          python-version: "3.13"
+
+      - uses: actions/setup-node@v6
+        with:
+          node-version: "24"
+
+      - name: Install cookiecutter
+        run: pip install cookiecutter
+
+      - name: Render
+        run: |
+          cookiecutter --no-input --config-file template/tests/fixtures/${{ matrix.fixture }}.yaml \
+            --output-dir rendered template
+          INSTANCE=$(find rendered -mindepth 1 -maxdepth 1 -type d | head -1)
+          echo "INSTANCE=$INSTANCE" >> "$GITHUB_ENV"
+
+      - name: The rendered instance must contain no template placeholders
+        run: |
+          if grep -rl "cookiecutter\." "$INSTANCE"; then
+            echo "Unrendered placeholders found" >&2
+            exit 1
+          fi
+
+      - name: Install
+        working-directory: ${{ env.INSTANCE }}
+        # No lockfile is shipped, because the project name is templated.
+        run: npm install --no-audit --no-fund
+
+      - name: Test
+        working-directory: ${{ env.INSTANCE }}
+        run: npm test
+
+      - name: Build
+        working-directory: ${{ env.INSTANCE }}
+        run: npm run build
+
+      - name: Documentation (docs/en, docs/de) matches and builds
+        run: |
+          pip install -r template/tests/docs/requirements.txt
+          python template/tests/check_docs.py "$INSTANCE" --prefix ifdd-ui-
+
+      - name: The private tree must ship empty
+        run: |
+          UNEXPECTED=$(find "$INSTANCE/src/private" -type f ! -name README.md)
+          if [ -n "$UNEXPECTED" ]; then
+            echo "The template must not ship private content:" >&2
+            echo "$UNEXPECTED" >&2
+            exit 1
+          fi
