@@ -1,11 +1,11 @@
 # syntax=docker/dockerfile:1
 
-FROM node:24-alpine AS deps
+FROM node:25-alpine AS deps
 WORKDIR /app
 COPY package.json ./
 RUN npm install
 
-FROM node:24-alpine AS development
+FROM node:25-alpine AS development
 ENV NODE_ENV=development
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
@@ -16,7 +16,7 @@ HEALTHCHECK --interval=30s --timeout=10s --start-period=60s --retries=3 \
     CMD wget -q -O /dev/null http://127.0.0.1:3000/ || exit 1
 CMD ["npm", "run", "start"]
 
-FROM node:24-alpine AS builder
+FROM node:25-alpine AS builder
 ENV NODE_ENV=production
 WORKDIR /app
 COPY --from=deps /app/node_modules ./node_modules
