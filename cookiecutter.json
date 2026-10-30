@@ -17,6 +17,7 @@
   "ifdd_oidc_realm": "https://id.domain/realms/testrealm",
   "ifdd_oidc_client_id": "client_id",
   "ifdd_registry_url": "ghcr.io/ifdd-de",
+  "ifdd_proxy_network": "proxy-net",
   "_copy_without_render": [
     "src/*.jsx",
     "src/*.css",

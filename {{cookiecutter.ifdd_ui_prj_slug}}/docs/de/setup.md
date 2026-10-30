@@ -6,7 +6,7 @@
 | Was | Warum |
 |---|---|
 | Docker mit Compose; Node.js 24 für Arbeit außerhalb des Containers | das Image entsteht aus `Dockerfile` (Node 24 zum Bauen, nginx zum Ausliefern) |
-| das externe Netz `proxy-net` und eine laufende Proxy-Instanz | Traefik routet `{{ cookiecutter.ifdd_ui_host }}` zum Container; die Compose-Dateien nennen `proxy-net` wörtlich |
+| das externe Netz `{{ cookiecutter.ifdd_proxy_network }}` und eine laufende Proxy-Instanz | Traefik routet `{{ cookiecutter.ifdd_ui_host }}` zum Container |
 | im Realm der public Client `{{ cookiecutter.ifdd_oidc_client_id }}` mit den Redirect-URIs `{{ cookiecutter.ifdd_ui_url }}/authentication/callback` und `{{ cookiecutter.ifdd_ui_url }}/authentication/silent-callback` | Anmeldung und stille Token-Erneuerung; das Keycloak-Template legt sie an |
 | das Backend erlaubt den Ursprung `{{ cookiecutter.ifdd_ui_url }}` (CORS) | der Browser ruft das Backend ursprungsübergreifend auf |
 | `csp-ui` des Proxys erlaubt Realm, Backend und die Dienste type und unit in `connect-src` sowie den Auth-Endpunkt des Realms in `frame-src` | sonst verweigert der Browser diese Aufrufe |

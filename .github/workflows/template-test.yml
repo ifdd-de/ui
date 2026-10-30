@@ -36,7 +36,7 @@ jobs:
           node-version: "24"
 
       - name: Install cookiecutter
-        run: pip install cookiecutter
+        run: pip install cookiecutter pyyaml
 
       - name: Render
         run: |
@@ -50,6 +50,15 @@ jobs:
           if grep -rl "cookiecutter\." "$INSTANCE"; then
             echo "Unrendered placeholders found" >&2
             exit 1
+          fi
+
+      - name: Traefik names follow the slug, the proxy network is the configured one
+        run: python template/tests/check_traefik.py template/tests/fixtures/${{ matrix.fixture }}.yaml "$INSTANCE"
+
+      - name: The hook rejects an invalid proxy network name
+        run: |
+          if cookiecutter --no-input --output-dir rejected template "ifdd_proxy_network=bad net"; then
+            echo "the hook should have rejected the network name"; exit 1
           fi
 
       - name: Install

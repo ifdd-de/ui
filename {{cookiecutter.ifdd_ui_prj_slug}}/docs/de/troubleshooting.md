@@ -31,7 +31,7 @@ Entwicklerwerkzeuge öffnen (Konsole und Netzwerk).
 |---|---|---|
 | ein privater Reiter erscheint nicht | Dateiname nicht `tab_<aspect>_<name>.jsx`, kein `context`-Export für einen Domain-Kontext, oder der Baum war beim Build nicht eingebunden | siehe `src/private/README.md`; neu bauen |
 | ein Build scheitert, obwohl sich hier nichts geändert hat | ohne Lockdatei hat `npm install` neuere Abhängigkeiten genommen | eine `package-lock.json` eines funktionierenden Builds committen |
-| der Container ist über den Proxy nicht erreichbar | er hängt nicht in `proxy-net` (fester Name in den Compose-Dateien), oder `IFDD_UI_HOST` weicht vom angefragten Host ab | den Router im Dashboard des Proxys prüfen |
+| der Container ist über den Proxy nicht erreichbar | er hängt nicht in `{{ cookiecutter.ifdd_proxy_network }}`, oder `IFDD_UI_HOST` weicht vom angefragten Host ab | den Router `{{ cookiecutter.ifdd_ui_prj_slug }}@docker` im Dashboard des Proxys prüfen |
 {%- if cookiecutter.ifdd_ui_enable_tls == "y" or cookiecutter.ifdd_ui_enable_letsencrypt == "y" %}
 | die UI wird ohne das Zertifikat des Proxys ausgeliefert | diese Instanz setzt `tls`-Labels am Router | `ifdd_ui_enable_tls` und `ifdd_ui_enable_letsencrypt` auf `n` setzen ({ref}`ifdd-ui-security`) |
 {%- endif %}

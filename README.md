@@ -27,6 +27,7 @@ code; `.env` only carries what docker compose needs.
 | `ifdd_be_url` | backend base URL |
 | `ifdd_schema_url`, `ifdd_type_url`, `ifdd_unit_url` | schema, type and unit services; the UI reads vocabularies and units from the last two, so the CSP of the proxy must allow them in `connect-src` |
 | `ifdd_oidc_realm`, `ifdd_oidc_client_id` | OIDC endpoint and client |
+| `ifdd_proxy_network` | shared: external Docker network of the proxy, default `proxy-net`; the compose files join it and name it in `traefik.docker.network` |
 
 ## Tabs come from the vocabularies
 

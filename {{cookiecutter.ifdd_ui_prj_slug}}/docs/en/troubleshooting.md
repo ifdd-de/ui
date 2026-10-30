@@ -31,7 +31,7 @@ and network) first.
 |---|---|---|
 | a private tab does not appear | file name not `tab_<aspect>_<name>.jsx`, no `context` export for a domain context, or the tree was not mounted at build time | see `src/private/README.md`; rebuild |
 | a build fails although nothing changed here | without a lockfile `npm install` took newer dependency versions | commit a `package-lock.json` of a working build |
-| the container is not reachable through the proxy | it is not on `proxy-net` (fixed name in the compose files), or `IFDD_UI_HOST` differs from the requested host | check the router in the proxy dashboard |
+| the container is not reachable through the proxy | it is not on `{{ cookiecutter.ifdd_proxy_network }}`, or `IFDD_UI_HOST` differs from the requested host | check the router `{{ cookiecutter.ifdd_ui_prj_slug }}@docker` in the proxy dashboard |
 {%- if cookiecutter.ifdd_ui_enable_tls == "y" or cookiecutter.ifdd_ui_enable_letsencrypt == "y" %}
 | the UI is served without the proxy's certificate | this instance sets router `tls` labels | set `ifdd_ui_enable_tls` and `ifdd_ui_enable_letsencrypt` to `n` ({ref}`ifdd-ui-security`) |
 {%- endif %}

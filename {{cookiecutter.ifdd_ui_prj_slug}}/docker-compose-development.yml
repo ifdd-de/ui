@@ -17,12 +17,12 @@ services:
       - 3000
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ifdd_ui.rule=Host(`${IFDD_UI_HOST}`)"
-      - "traefik.http.services.ifdd_ui.loadbalancer.server.port=3000"
-      - "traefik.docker.network=proxy-net"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.rule=Host(`${IFDD_UI_HOST}`)"
+      - "traefik.http.services.{{ cookiecutter.ifdd_ui_prj_slug }}.loadbalancer.server.port=3000"
+      - "traefik.docker.network={{ cookiecutter.ifdd_proxy_network }}"
     restart: always
 
 networks:
   ext-proxy-net:
-    name: proxy-net
+    name: {{ cookiecutter.ifdd_proxy_network }}
     external: true
