@@ -53,7 +53,7 @@ Skip-Liste und kann seitdem geändert worden sein.
 | | Produktion | Entwicklung |
 |---|---|---|
 | Port | 80 (nginx) | 3000 (Vite) |
-| Router und Dienst | `ifdd_ui`, Regel `Host(<IFDD_UI_HOST>)` | dieselben |
+| Router und Dienst | `{{ cookiecutter.ifdd_ui_prj_slug }}`, Regel `Host(<IFDD_UI_HOST>)` | dieselben |
 | Middlewares | `security-headers@file`, `csp-ui@file` | keine |
-| Netz | `proxy-net` (extern) | `proxy-net` (extern) |
+| Netz | `{{ cookiecutter.ifdd_proxy_network }}` (extern) | dasselbe |
 | Neustart | `always` | `always` |

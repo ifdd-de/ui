@@ -13,21 +13,21 @@ services:
       - 80
     labels:
       - "traefik.enable=true"
-      - "traefik.http.routers.ifdd_ui.rule=Host(`${IFDD_UI_HOST}`)"
-      - "traefik.http.services.ifdd_ui.loadbalancer.server.port=80"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.rule=Host(`${IFDD_UI_HOST}`)"
+      - "traefik.http.services.{{ cookiecutter.ifdd_ui_prj_slug }}.loadbalancer.server.port=80"
       # Security headers from the proxy (ifdd-de/proxy, headers.yml).
-      - "traefik.http.routers.ifdd_ui.middlewares=security-headers@file,csp-ui@file"
-      - "traefik.docker.network=proxy-net"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.middlewares=security-headers@file,csp-ui@file"
+      - "traefik.docker.network={{ cookiecutter.ifdd_proxy_network }}"
       {%- if cookiecutter.ifdd_ui_enable_tls == "y" %}
-      - "traefik.http.routers.ifdd_ui.entrypoints=websecure"
-      - "traefik.http.routers.ifdd_ui.tls=true"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.entrypoints=websecure"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.tls=true"
       {%- endif +%}
       {%- if cookiecutter.ifdd_ui_enable_letsencrypt == "y" %}
-      - "traefik.http.routers.ifdd_ui.tls.certresolver=letsencrypt"
+      - "traefik.http.routers.{{ cookiecutter.ifdd_ui_prj_slug }}.tls.certresolver=letsencrypt"
       {%- endif +%}
     restart: always
 
 networks:
   ext-proxy-net:
-    name: proxy-net
+    name: {{ cookiecutter.ifdd_proxy_network }}
     external: true

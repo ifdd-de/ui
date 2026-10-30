@@ -53,7 +53,7 @@ and may have been edited since.
 | | Production | Development |
 |---|---|---|
 | port | 80 (nginx) | 3000 (Vite) |
-| router and service | `ifdd_ui`, rule `Host(<IFDD_UI_HOST>)` | the same |
+| router and service | `{{ cookiecutter.ifdd_ui_prj_slug }}`, rule `Host(<IFDD_UI_HOST>)` | the same |
 | middlewares | `security-headers@file`, `csp-ui@file` | none |
-| network | `proxy-net` (external) | `proxy-net` (external) |
+| network | `{{ cookiecutter.ifdd_proxy_network }}` (external) | the same |
 | restart | `always` | `always` |
