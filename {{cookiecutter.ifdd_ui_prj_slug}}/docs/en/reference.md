@@ -16,6 +16,7 @@ variable.
 | `src/i18n/` | built-in translations |
 | `src/private/` | mount point of the private tree (not versioned) |
 | `tests/` | Vitest tests |
+| `certs/` | additional CA certificates for the image build (not versioned, on the skip list) |
 | `Dockerfile`, `nginx.conf` | image: build with Node, serve with nginx |
 | `docker-compose-production.yml`, `docker-compose-development.yml` | production image, Vite dev server |
 | `dotenv.dist` → `.env` | `IFDD_UI_HOST`, `IFDD_UI_VERSION` for docker compose |

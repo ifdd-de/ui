@@ -5,7 +5,7 @@
 
 | What | Why |
 |---|---|
-| Docker with Compose; Node.js 24 for work outside the container | the image is built from `Dockerfile` (Node 24 to build, nginx to serve) |
+| Docker with Compose; Node.js 26 for work outside the container | the image is built from `Dockerfile` (Node 26 to build, nginx to serve) |
 | the external network `{{ cookiecutter.ifdd_proxy_network }}` and a running proxy instance | Traefik routes `{{ cookiecutter.ifdd_ui_host }}` to the container |
 | in the realm, the public client `{{ cookiecutter.ifdd_oidc_client_id }}` with the redirect URIs `{{ cookiecutter.ifdd_ui_url }}/authentication/callback` and `{{ cookiecutter.ifdd_ui_url }}/authentication/silent-callback` | login and silent token renewal; the keycloak template creates them |
 | the backend allows the origin `{{ cookiecutter.ifdd_ui_url }}` (CORS) | the browser calls the backend cross-origin |
@@ -20,12 +20,12 @@ holds the instances, with the skip list this template recommends:
 
 ```bash
 cruft create --no-input --config-file .cookiecutter_all.yaml \
-  --skip .env --skip envs --skip src/private --skip src/Env.js \
+  --skip .env --skip envs --skip certs --skip src/private --skip src/Env.js \
   https://github.com/ifdd-de/ui
 ```
 
 The skip list keeps the paths that belong to the instance out of every later
-`cruft update`. The meta repository passes `--skip envs --skip .env`.
+`cruft update`. The meta repository passes `--skip envs --skip .env --skip certs`.
 
 ## Configuration
 
@@ -43,6 +43,35 @@ change it; edit it by hand.
 
 The aspects of this instance are `ifddAspects` in `src/Env.js`; an aspect
 must also exist in `src/ifdd/registry.jsx` to be usable.
+
+(ifdd-ui-setup-certs)=
+## Additional CA certificates for the build
+
+If the build reaches the npm registry through a TLS-intercepting web proxy,
+`npm install` stops with an error such as `UNABLE_TO_VERIFY_LEAF_SIGNATURE`,
+`SELF_SIGNED_CERT_IN_CHAIN` or `UNABLE_TO_GET_ISSUER_CERT_LOCALLY`. Place the CA certificates of that proxy
+as PEM files (`*.crt` or `*.pem`) in `certs/` and rebuild:
+
+```bash
+cp /path/to/proxy-ca.crt certs/
+docker compose -f docker-compose-production.yml build
+```
+
+The Node stages collect the files into one bundle and set
+`NODE_EXTRA_CA_CERTS` to it: Node and npm trust these CAs in addition to
+their built-in ones. Without files nothing changes. The build stops on a
+file with a private key or without a PEM certificate; convert DER files
+first (`certs/README.md`). The production image gets neither the
+certificates nor the variable. `certs/` is git-ignored except for its
+README and is on the skip list.
+
+For `npm install` outside the container, set the variable in the shell:
+`NODE_EXTRA_CA_CERTS=/path/to/proxy-ca.crt npm install`.
+
+```{note}
+Not tested: the published image `node:26-alpine`; the build was checked
+with a stand-in image (Node 26 on Ubuntu) and an intercepting test proxy.
+```
 
 ## The private tree
 

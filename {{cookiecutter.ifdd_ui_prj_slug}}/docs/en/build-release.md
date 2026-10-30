@@ -3,14 +3,15 @@
 
 ## Image
 
-`Dockerfile` has four stages:
+`Dockerfile` has five stages:
 
 | Stage | Base | Does |
 |---|---|---|
-| `deps` | `node:24-alpine` | `npm install` |
-| `development` | `node:24-alpine` | the Vite dev server on port 3000 (`docker-compose-development.yml`) |
-| `builder` | `node:24-alpine` | `npm run build` into `build/` |
-| `production` | `nginx:1.27-alpine` | serves `build/` with `nginx.conf` on port 80 |
+| `base` | `node:26-alpine` | additional CA certificates from `certs/` ({ref}`ifdd-ui-setup-certs`) |
+| `deps` | `base` | `npm install` |
+| `development` | `base` | the Vite dev server on port 3000 (`docker-compose-development.yml`) |
+| `builder` | `base` | `npm run build` into `build/` |
+| `production` | `nginx:1.30-alpine` | serves `build/` with `nginx.conf` on port 80 |
 
 ```bash
 docker compose -f docker-compose-production.yml build
@@ -51,7 +52,7 @@ npm run build
 
 `.github/workflows/ci.yml` runs on every push and pull request:
 
-- **test and build**: `npm install`, `npm test`, `npm run build` on Node 24;
+- **test and build**: `npm install`, `npm test`, `npm run build` on Node 26;
 - **template drift**: `cruft check` and `cruft diff`, informational.
 
 Both check out submodules, so a private tree mounted as a submodule is
