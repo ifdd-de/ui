@@ -3,14 +3,15 @@
 
 ## Image
 
-`Dockerfile` hat vier Stufen:
+`Dockerfile` hat fünf Stufen:
 
 | Stufe | Basis | Tut |
 |---|---|---|
-| `deps` | `node:24-alpine` | `npm install` |
-| `development` | `node:24-alpine` | der Vite-Dev-Server auf Port 3000 (`docker-compose-development.yml`) |
-| `builder` | `node:24-alpine` | `npm run build` nach `build/` |
-| `production` | `nginx:1.27-alpine` | liefert `build/` mit `nginx.conf` auf Port 80 aus |
+| `base` | `node:26-alpine` | zusätzliche CA-Zertifikate aus `certs/` ({ref}`ifdd-ui-setup-certs`) |
+| `deps` | `base` | `npm install` |
+| `development` | `base` | der Vite-Dev-Server auf Port 3000 (`docker-compose-development.yml`) |
+| `builder` | `base` | `npm run build` nach `build/` |
+| `production` | `nginx:1.30-alpine` | liefert `build/` mit `nginx.conf` auf Port 80 aus |
 
 ```bash
 docker compose -f docker-compose-production.yml build
@@ -51,7 +52,7 @@ npm run build
 
 `.github/workflows/ci.yml` läuft bei jedem Push und Pull Request:
 
-- **Test und Build**: `npm install`, `npm test`, `npm run build` mit Node 24;
+- **Test und Build**: `npm install`, `npm test`, `npm run build` mit Node 26;
 - **Template drift**: `cruft check` und `cruft diff`, nur informativ.
 
 Beide checken Submodule mit aus; ein als Submodul eingebundener privater

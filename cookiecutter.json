@@ -1,7 +1,7 @@
 {
   "ifdd_ui_prj_name": "IFDD UI",
   "ifdd_ui_prj_slug": "{{ cookiecutter.ifdd_ui_prj_name|lower|replace(' ', '_') }}",
-  "ifdd_ui_version": "26.10.2",
+  "ifdd_ui_version": "26.10.3",
   "ifdd_ui_host": "ifdd_ui",
   "ifdd_ui_url": "http://ifdd_ui:80",
   "ifdd_ui_title": "IFDD",

@@ -106,8 +106,13 @@ Recommended skip list when generating, so that instance-owned paths survive a
 template update:
 
 ```bash
---skip .env --skip envs --skip src/private --skip src/Env.js
+--skip .env --skip envs --skip certs --skip src/private --skip src/Env.js
 ```
+
+`certs/` takes additional CA certificates (PEM) for the image build, e.g. of a
+TLS-intercepting web proxy in front of the npm registry; the Node stages of
+the `Dockerfile` trust them through `NODE_EXTRA_CA_CERTS` (see
+`docs/en/setup.md` of an instance).
 
 ## Toolchain
 

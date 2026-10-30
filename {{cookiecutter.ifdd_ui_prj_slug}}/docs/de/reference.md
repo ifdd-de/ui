@@ -16,6 +16,7 @@ ist.
 | `src/i18n/` | eingebaute Übersetzungen |
 | `src/private/` | Einhängepunkt des privaten Baums (nicht versioniert) |
 | `tests/` | Vitest-Tests |
+| `certs/` | zusätzliche CA-Zertifikate für den Image-Build (nicht versioniert, auf der Skip-Liste) |
 | `Dockerfile`, `nginx.conf` | Image: bauen mit Node, ausliefern mit nginx |
 | `docker-compose-production.yml`, `docker-compose-development.yml` | Produktions-Image, Vite-Dev-Server |
 | `dotenv.dist` → `.env` | `IFDD_UI_HOST`, `IFDD_UI_VERSION` für docker compose |

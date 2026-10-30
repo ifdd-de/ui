@@ -30,6 +30,9 @@ and network) first.
 | Symptom | Cause | Remedy |
 |---|---|---|
 | a private tab does not appear | file name not `tab_<aspect>_<name>.jsx`, no `context` export for a domain context, or the tree was not mounted at build time | see `src/private/README.md`; rebuild |
+| `npm install` in the build stops with `UNABLE_TO_VERIFY_LEAF_SIGNATURE`, `SELF_SIGNED_CERT_IN_CHAIN` or `UNABLE_TO_GET_ISSUER_CERT_LOCALLY` | a web proxy intercepts TLS with its own CA | put that CA as PEM into `certs/`, rebuild ({ref}`ifdd-ui-setup-certs`) |
+| the build stops with `"/certs": not found` | the directory `certs/` is missing, e.g. because `certs` was on the skip list before the `cruft update` that brought it | `mkdir certs` (the README is optional) |
+| the build stops with `certs/<file>: no PEM certificate` or `contains a private key` | a DER file or a key in `certs/` | convert to PEM, remove keys ({ref}`ifdd-ui-setup-certs`) |
 | a build fails although nothing changed here | without a lockfile `npm install` took newer dependency versions | commit a `package-lock.json` of a working build |
 | the container is not reachable through the proxy | it is not on `{{ cookiecutter.ifdd_proxy_network }}`, or `IFDD_UI_HOST` differs from the requested host | check the router `{{ cookiecutter.ifdd_ui_prj_slug }}@docker` in the proxy dashboard |
 {%- if cookiecutter.ifdd_ui_enable_tls == "y" or cookiecutter.ifdd_ui_enable_letsencrypt == "y" %}
