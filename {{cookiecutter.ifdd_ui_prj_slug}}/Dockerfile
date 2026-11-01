@@ -53,7 +53,7 @@ RUN npm run build
 
 # The production stage serves static files and makes no outgoing calls; it
 # gets neither the certificates nor NODE_EXTRA_CA_CERTS.
-FROM nginx:1.30-alpine AS production
+FROM nginx:1.31-alpine AS production
 COPY --from=builder /app/build /usr/share/nginx/html
 COPY nginx.conf /etc/nginx/conf.d/default.conf
 EXPOSE 80
