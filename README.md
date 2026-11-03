@@ -155,7 +155,7 @@ with `-W` (configuration `tests/docs/conf.py`, versions
 
 | Workflow | Trigger | Does |
 |---|---|---|
-| `template-test.yml` | push, PR | renders against three fixture configurations, installs, tests and builds each, checks and builds the documentation (`tests/check_docs.py`); fails if the private tree ships anything but its README |
+| `template-test.yml` | push, PR | renders against three fixture configurations, installs, tests and builds each, checks and builds the documentation (`tests/check_docs.py`), checks that two instances with different project names share no Traefik or image name (`tests/check_two_instances.py`, with a counter-check); fails if the private tree ships anything but its README |
 | `template-update-test.yml` | push, PR | generates from the latest tag, applies the current template with `cruft update`, then tests and builds the result |
 
 Generated instances carry `ci.yml` (test, build, plus `cruft check` and
