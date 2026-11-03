@@ -44,6 +44,24 @@ change it; edit it by hand.
 The aspects of this instance are `ifddAspects` in `src/Env.js`; an aspect
 must also exist in `src/ifdd/registry.jsx` to be usable.
 
+(ifdd-ui-setup-several-servers)=
+### Several servers
+
+The browser loads the UI from this server, but may call the realm, the
+backend and the vocabularies (type, unit) on others, for example when the
+stages share the content services of one server:
+
+- `src/Env.js` holds their public URLs, as given by the variables.
+- The proxy of this server sends the Content Security Policy of the UI
+  (`ifdd_proxy_csp_ui` of `ifdd-de/proxy`): `connect-src` must list every
+  one of these origins, `frame-src` the realm (silent renewal). A missing one
+  shows as `Refused to connect` in the browser console.
+- The browser must trust the certificates of all these servers.
+
+Two UIs on one server (for example two stages on one virtual machine) need
+different `ifdd_ui_prj_name`: the directory, the Traefik names and the image
+name follow it, and each image carries the `src/Env.js` of its instance.
+
 (ifdd-ui-setup-certs)=
 ## Additional CA certificates for the build
 

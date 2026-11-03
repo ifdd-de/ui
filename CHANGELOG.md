@@ -2,6 +2,16 @@
 
 The version scheme follows the other IFDD templates: `YY.MM.N`.
 
+## [Unreleased]
+
+- Setup page: section on several servers: URLs in `src/Env.js`, the CSP of
+  this server's proxy must list every origin the UI calls.
+- Two instances on one server: they need different `ifdd_ui_prj_name`; the
+  directory, the Traefik names and the image name follow it. The template
+  CI renders two instances and checks that they share no Traefik or image
+  name (`tests/check_two_instances.py`), with a counter-check for the same
+  name twice.
+
 ## [26.10.3] - 2026-10-30
 
 - Images: `node:26-alpine` (Node 26, the current LTS; was `node:25-alpine`)

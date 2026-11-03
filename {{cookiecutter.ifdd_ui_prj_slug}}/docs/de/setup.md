@@ -45,6 +45,24 @@ sie nicht; dann von Hand bearbeiten.
 Die Aspekte dieser Instanz stehen in `ifddAspects` in `src/Env.js`; ein
 Aspekt muss zusätzlich in `src/ifdd/registry.jsx` vorhanden sein.
 
+(ifdd-ui-setup-several-servers)=
+### Mehrere Server
+
+Der Browser lädt die UI von diesem Server, kann aber den Realm, das Backend
+und die Vokabulare (type, unit) auf anderen aufrufen, etwa wenn die Stages die
+Inhaltsdienste eines Servers teilen:
+
+- `src/Env.js` enthält ihre öffentlichen URLs, wie die Variablen sie angeben.
+- Der Proxy dieses Servers schickt die Content Security Policy der UI
+  (`ifdd_proxy_csp_ui` von `ifdd-de/proxy`): `connect-src` muss jeden dieser
+  Origins nennen, `frame-src` den Realm (stille Erneuerung). Ein fehlender
+  zeigt sich als `Refused to connect` in der Browser-Konsole.
+- Der Browser muss den Zertifikaten aller dieser Server vertrauen.
+
+Zwei UIs auf einem Server (etwa zwei Stages auf einer virtuellen Maschine)
+brauchen verschiedene `ifdd_ui_prj_name`: Verzeichnis, Traefik-Namen und
+Image-Name folgen ihm, und jedes Image trägt die `src/Env.js` seiner Instanz.
+
 (ifdd-ui-setup-certs)=
 ## Zusätzliche CA-Zertifikate für den Build
 
