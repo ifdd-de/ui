@@ -47,14 +47,23 @@ across reloads.
 
 ## Architecture
 
-```{mermaid}
-flowchart LR
-  Browser -->|"{{ cookiecutter.ifdd_ui_host }}"| Proxy[proxy: Traefik]
-  Proxy --> UI[ui: nginx with the built app]
-  Browser -->|token, userinfo| KC[Keycloak]
-  Browser -->|documents, /prot_version| BE[be]
-  Browser -->|vocabularies| Type[type]
-  Browser -->|units| Unit[unit]
+```{uml}
+@startuml
+left to right direction
+  rectangle "Browser" as Browser
+  rectangle "proxy: Traefik" as Proxy
+  Browser --> Proxy : {{ cookiecutter.ifdd_ui_host }}
+  rectangle "ui: nginx with the built app" as UI
+  Proxy --> UI
+  rectangle "Keycloak" as KC
+  Browser --> KC : token, userinfo
+  rectangle "be" as BE
+  Browser --> BE : documents, /prot_version
+  rectangle "type" as Type
+  Browser --> Type : vocabularies
+  rectangle "unit" as Unit
+  Browser --> Unit : units
+@enduml
 ```
 
 The container only serves static files. Every call to the backend, the
