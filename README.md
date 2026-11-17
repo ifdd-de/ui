@@ -95,7 +95,7 @@ the generated instance.
 ## Usage
 
 ```bash
-cruft create --checkout v26.10.2 https://github.com/ifdd-de/ui
+cruft create --checkout v26.11.1 https://github.com/ifdd-de/ui
 cd <instance>
 npm install
 npm run dev
@@ -133,7 +133,8 @@ pages do not reach the image.
 
 The pages have no `conf.py` of their own: they are meant to be copied into a
 Sphinx project that documents all services. That project needs `myst_parser`
-and `sphinxcontrib.mermaid`. Labels start with `ifdd-ui-`; references to
+and `sphinxcontrib.plantuml` (PlantUML with Java and Graphviz).
+Labels start with `ifdd-ui-`; references to
 `ifdd-instances-ui` (the instance chapter of the meta repository) resolve
 only there.
 
@@ -151,6 +152,14 @@ reference to an own label resolvable, and a Sphinx build of each language
 with `-W` (configuration `tests/docs/conf.py`, versions
 `tests/docs/requirements.txt`).
 
+The check runs PlantUML, so it needs Java and Graphviz.
+`tests/docs/get_plantuml.sh` downloads the pinned PlantUML jar into the user
+cache, checks its SHA-256 and prints its path:
+
+```bash
+export IFDD_PLANTUML_JAR="$(tests/docs/get_plantuml.sh)"
+```
+
 ## CI
 
 | Workflow | Trigger | Does |
@@ -167,65 +176,8 @@ private tabs are simply absent.
 The workflow files are on the template's copy-without-render list, because
 GitHub Actions expressions use the same `${{ }}` syntax as Jinja.
 
-## Honesty notes
+## AI assistance
 
-Documentation `docs/` (2026-10-13): rendered with cookiecutter 2.7.1 for the
-three fixtures and with the `cookiecutter_all.yaml` of the meta repository;
-`tests/check_docs.py` passes for each (Sphinx 9.1.0, myst-parser 5.1.0,
-sphinxcontrib-mermaid 2.1.1, Python 3.13) and the placeholder check finds
-nothing. The workflow file passes actionlint 1.7.12; the workflow itself has
-not run. Content: taken from the previous instance README, this README, the
-`Dockerfile`, `nginx.conf`, the compose files and `src/auth/`. Not checked:
-the Vitest suite after this change (no file it reads was changed). Also
-checked (2026-10-13): one Sphinx project per language with the pages of all
-ten service templates (rendered with `cookiecutter_all.yaml`), the instance
-chapter of the meta repository and ifdd-be-core with its OpenAPI document
-builds with `-W` and no suppressed warnings, so every cross reference
-resolves; the Mermaid diagrams of all services, and of the option variants
-of the fixtures, render in headless Chromium 141.0.7390.37 (Playwright
-1.56.0, Mermaid 11.12.1 served locally).
-
-Bitemporal backend (2026-10-06): the time fields follow the c_* terms of
-the schemas (`schemaVersion` 0.10.0). `c_created`, `c_modified`,
-`c_validNotBefore`, `c_validNotAfter` and `c_cacheUpdated` are shown in the
-base tab only; the aspect tabs no longer list `created`, `modified` and
-`expired` (the latter never matched a schema term, the schemas called it
-`expire`). Lists show `c_created`/`c_modified` and sort by
-`c_cacheUpdated DESC` by default (`c_modified` may be empty, and PostgreSQL
-puts empty values first when sorting descending). References sort by
-`objName`; before they asked for `name`, which no document has. The data
-provider sends only the sort keys ifdd-be-core accepts and leaves others out
-(react-admin falls back to `id`). The UI always shows the current state; it
-does not offer an instant in valid time. Checked: vitest (39 tests; 8 of the
-9 new ones fail against the previous state) and `vite build` on Node 22,
-rendering of all three fixtures with cookiecutter 2.7.1. Not checked: the
-running UI in a browser against the new backend.
-
-Generic context tabs (2026-10-12): tested with vitest (49 tests, all three
-fixtures) and `vite build`; the new tests (context matching by name,
-vocabulary fetch and language, rows and order of a context, one fetch per
-namespace for two tabs, quantity value with unit symbol and link, plain and
-typed values, reference targets) fail against the previous template. The
-vocabulary documents of the tests have the shape of the ifdd-de/type and
-ifdd-de/unit examples; the real services were checked separately with nginx
-1.24.0. Not checked: a browser against a running backend, type and unit
-service (CSP, CORS, tab switching), and the private tab of an existing
-deployment (it needs `context:` instead of `schemaSuffix:` and the context
-name as prefix).
-
-Tabs and translations (2026-10-12, second round): values one below the
-other, the aspect tab as the default (list, references, redirect with a
-notice for unknown tabs), titles and labels from the vocabulary, then the
-translation, then the name. Found and fixed on the way: typed values (dates,
-`xsd:string`, `xsd:gYear`, `xsd:duration`) and single references of a domain
-context were empty, because react-admin splits `source` at dots
-(`breaker.grid.example.ifdd.de:c_created.@value`); they are now read inside
-the value. Tested with vitest (64 tests in all three fixtures) and `vite
-build`. Of the 16 new or changed tests 12 fail against the previous
-template; the other four cover what it already did (vocabulary labels, a tab
-the record has, a target tab from `rdfs:range`) or guard the redirect (the
-cache test fails against the redirect without the single-document check); in
-Chromium 1194 (headless) with a scratch harness: the real list and show views,
-the rendered type and unit examples, a fake backend whose list entries look
-like those of ifdd-be-core. Not checked: a running ifdd-be-core and the real
-type and unit services behind the proxy (CSP, CORS), the login.
+Some parts of this repository, in particular the tests, the test data and the
+documentation, were developed or improved with the help of large language
+models (LLMs). All changes were reviewed and released by the maintainer.

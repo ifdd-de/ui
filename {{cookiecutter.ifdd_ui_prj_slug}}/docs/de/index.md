@@ -48,14 +48,23 @@ Sitzung geholt; der HTTP-Cache des Browsers hält es über Neuladen hinweg.
 
 ## Architektur
 
-```{mermaid}
-flowchart LR
-  Browser -->|"{{ cookiecutter.ifdd_ui_host }}"| Proxy[proxy: Traefik]
-  Proxy --> UI[ui: nginx mit der gebauten App]
-  Browser -->|Token, Userinfo| KC[Keycloak]
-  Browser -->|Dokumente, /prot_version| BE[be]
-  Browser -->|Vokabulare| Type[type]
-  Browser -->|Einheiten| Unit[unit]
+```{uml}
+@startuml
+left to right direction
+  rectangle "Browser" as Browser
+  rectangle "proxy: Traefik" as Proxy
+  Browser --> Proxy : {{ cookiecutter.ifdd_ui_host }}
+  rectangle "ui: nginx mit der gebauten App" as UI
+  Proxy --> UI
+  rectangle "Keycloak" as KC
+  Browser --> KC : Token, Userinfo
+  rectangle "be" as BE
+  Browser --> BE : Dokumente, /prot_version
+  rectangle "type" as Type
+  Browser --> Type : Vokabulare
+  rectangle "unit" as Unit
+  Browser --> Unit : Einheiten
+@enduml
 ```
 
 Der Container liefert nur statische Dateien aus. Jeder Aufruf von Backend,

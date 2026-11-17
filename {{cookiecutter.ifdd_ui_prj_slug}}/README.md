@@ -29,13 +29,12 @@ The pages are Sphinx sources in MyST Markdown, meant to be copied into a
 documentation project that covers all services; GitHub shows them as plain
 Markdown.
 
-## Honesty notes
+## AI assistance
 
-The template tests install, test (Vitest) and build this application for
-three configurations; the README of the template `ifdd-de/ui` lists what was
-checked in a browser and what was not. Not checked: the image build, the
-release workflow, and the UI against a running backend, type and unit
-service behind the proxy (CSP, CORS, login).
+Some parts of the template `ifdd-de/ui` this instance was generated
+from, in particular the tests, the test data and the documentation, were
+developed or improved with the help of large language models (LLMs). All
+changes were reviewed and released by the maintainer.
 
 ## License
 
