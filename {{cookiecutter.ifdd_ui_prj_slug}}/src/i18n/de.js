@@ -69,6 +69,7 @@ export default {
             hideAllProperties: 'Eigenschaften ausblenden',
             rawApiData: 'Rohdaten der API',
             tabNotFound: 'Tab „%{tab}“: für dieses Objekt nicht vorhanden oder nicht sichtbar.',
+            noReadRole: 'Angemeldet, aber ohne Recht, die Daten zu lesen. Eine Leserolle vergibt die Administration dieser Installation.',
         },
     },
     resources: {

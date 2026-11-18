@@ -2,6 +2,15 @@
 
 The version scheme follows the other IFDD templates: `YY.MM.N`.
 
+## [26.11.2] - 2026-11-18
+
+- Dashboard: a signed-in user without a read role gets a hint (en, de) instead
+  of an empty page; the hint has the role `status`. Test
+  `tests/dashboard.test.jsx`; its first case fails with the dashboard of
+  26.11.1. Found with the browser tests of `ifdd-de/meta`.
+- `.gitignore` of the template repository: legacy `dd4` names removed.
+- License line with the e-mail address of the holder.
+
 ## [26.11.1] - 2026-11-14
 
 - Setup page: section on several servers: URLs in `src/Env.js`, the CSP of

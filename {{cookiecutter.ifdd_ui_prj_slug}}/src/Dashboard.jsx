@@ -79,6 +79,13 @@ export const Dashboard = ({permissions = [], permissionsLoaded = false}) => {
                         </ListItemButton>
                     ))}
                 </List>
+                {permissionsLoaded && !canRead && (
+                    <CardContent>
+                        <Typography variant="body1" role="status" style={styles.text}>
+                            {translate('ifdd.ui.noReadRole')}
+                        </Typography>
+                    </CardContent>
+                )}
                 <CardContent>
                     <Typography variant="caption" style={styles.version}>
                         Frontend {ifddVersion} | Backend {backendVersion}
