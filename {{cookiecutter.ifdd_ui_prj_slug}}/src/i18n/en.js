@@ -72,6 +72,7 @@ export default {
             hideAllProperties: 'Hide all properties',
             rawApiData: 'Raw API data',
             tabNotFound: 'Tab "%{tab}": not present for this object or not visible to you.',
+            noReadRole: 'Signed in, but without the right to read the data. The administrators of this installation can grant a read role.',
         },
     },
     resources: {
