@@ -2,6 +2,12 @@
 
 The version scheme follows the other IFDD templates: `YY.MM.N`.
 
+## [Unreleased]
+
+- CI: GitHub Actions pinned to commit SHAs (version as comment),
+  `persist-credentials: false` on every checkout; the same in the workflows of
+  the instance (there also raised to the actions' current major versions).
+
 ## [26.11.2] - 2026-11-18
 
 - Dashboard: a signed-in user without a read role gets a hint (en, de) instead
