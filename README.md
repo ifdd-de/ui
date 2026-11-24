@@ -95,7 +95,7 @@ the generated instance.
 ## Usage
 
 ```bash
-cruft create --checkout v26.11.2 https://github.com/ifdd-de/ui
+cruft create --checkout v26.11.11 https://github.com/ifdd-de/ui
 cd <instance>
 npm install
 npm run dev
